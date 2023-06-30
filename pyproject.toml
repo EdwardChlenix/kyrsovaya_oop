@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "kyrsovaya-oop"
+version = "0.1.0"
+description = ""
+authors = ["Edward <nipetrovskiy@gmail.com>"]
+readme = "README.md"
+packages = [{include = "kyrsovaya_oop"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.4.0"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
