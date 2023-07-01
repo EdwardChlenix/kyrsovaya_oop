@@ -28,4 +28,31 @@ class HeadHunter(JobSites, ABC):
                 url = item['alternate_url']
 
                 if item['salary']:
+                    salary_min = item['salary']['from']
+                    salary_max = item['salary']['to']
 
+                else:
+                    salary_min = None
+                    salary_max = None
+
+                vacancie_description = item['snippet']['requirement']
+
+                jobs = {
+                    'id': vacancie_id,
+                    'title': title,
+                    'link': url,
+                    'salary_min': salary_min,
+                    'salary_max': salary_max,
+                    'description': vacancie_description
+                }
+                list_of_jobs.append(jobs)
+            self.file_vacancy(list_of_jobs)
+            return list_of_jobs
+
+        else:
+            print(f'Не удалось выполнить запрос, код ошибки - {self.server_connection().status_code}')
+
+
+    def file_vacancy(self, list_of_jobs):
+        with open('vacancies.json', 'w', encoding='utf-8') as f:
+            json.dump(list_of_jobs, f, ensure_ascii=False)
