@@ -4,7 +4,7 @@ from abc import ABC
 
 import requests
 from abstract_class import JobSites
-
+from create_vacancy import Vacancy
 class SuperJob(JobSites, ABC):
 
     def __init__(self, keyword, vacancies_count):
@@ -62,3 +62,12 @@ class SuperJob(JobSites, ABC):
     def file_vacancy(self, list_of_jobs):
         with open('vacancies.json', 'w', encoding='utf-8') as f:
             json.dump(list_of_jobs, f, ensure_ascii=False)
+
+
+
+def hh_function(keyword, vacancies_count):
+    dict = SuperJob(keyword, vacancies_count)
+    job_dict = dict.job_dictionary()
+    Vacancy.vacancies_dict
+    for item in Vacancy.vacancies_dict:
+        print(str(item))
