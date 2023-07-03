@@ -15,3 +15,4 @@ class Vacancy:
         return f"ID: {self.id}\nОписание вакансии: {self.description}"
 
 
+

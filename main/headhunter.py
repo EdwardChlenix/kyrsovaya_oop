@@ -13,7 +13,7 @@ class HeadHunter(JobSites, ABC):
     def server_connection(self, params=None):
 
         url = 'https://api.hh.ru/vacancies'
-        params = {'text': self.keyword, 'per page': self.vacancies_count}
+        params = {'text': self.keyword, 'per_page': self.vacancies_count}
         headers = {'User-Agent': '322322'}
         response = requests.get(url, params=params, headers=headers)
 
@@ -38,7 +38,7 @@ class HeadHunter(JobSites, ABC):
 
                 vacancy_description = item['snippet']['requirement']
 
-                jobs = {
+                job = {
                     'id': vacancy_id,
                     'title': title,
                     'link': url,
@@ -46,7 +46,7 @@ class HeadHunter(JobSites, ABC):
                     'salary_max': salary_max,
                     'description': vacancy_description
                 }
-                list_of_jobs.append(jobs)
+                list_of_jobs.append(job)
             self.file_vacancy(list_of_jobs)
             return list_of_jobs
 
@@ -60,9 +60,9 @@ class HeadHunter(JobSites, ABC):
 
 
 def hh_function(keyword, vacancies_count):
-    dict = HeadHunter(keyword, vacancies_count)
-    job_dict = dict.job_dictionary()
-    Vacancy.vacancies_dict
+    first_dict = HeadHunter(keyword, vacancies_count)
+    job_dict = first_dict.job_dictionary()
+    Vacancy.vacancies_dict = job_dict
     for item in Vacancy.vacancies_dict:
         print(str(item))
 

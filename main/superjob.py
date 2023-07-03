@@ -8,13 +8,13 @@ from create_vacancy import Vacancy
 class SuperJob(JobSites, ABC):
 
     def __init__(self, keyword, vacancies_count):
-        self.vacanies_count = vacancies_count
+        self.vacancies_count = vacancies_count
         self.keyword = keyword
         self.min_salary = None
 
 
     def server_connection(self):
-        params = {"count": self.vacanies_count, "page": None,
+        params = {"count": self.vacancies_count, "page": None,
                   "keyword": self.keyword, "archive": False, }
         headers = {
             'Host': 'api.superjob.ru',
@@ -29,30 +29,31 @@ class SuperJob(JobSites, ABC):
         if self.server_connection().status_code == 200:
             data = self.server_connection().json()
             list_of_jobs = []
-            for item in data['items']:
-                vacancie_id = item['id']
-                title = item['name']
-                url = item['alternate_url']
+            for item in data['objects']:
+                vacancy_id = item['id']
+                title = item['profession']
+                url = item['link']
+                vacancy_description = item['candidat']
 
-                if item['salary']:
-                    salary_min = item['salary']['from']
-                    salary_max = item['salary']['to']
+                if item['payment_from']:
+                    salary_min = item['payment_from']
+                    salary_max = item['payment_to']
 
                 else:
                     salary_min = None
                     salary_max = None
 
-                vacancie_description = item['snippet']['requirement']
 
-                jobs = {
-                    'id': vacancie_id,
+
+                job = {
+                    'id': vacancy_id,
                     'title': title,
                     'link': url,
                     'salary_min': salary_min,
                     'salary_max': salary_max,
-                    'description': vacancie_description
+                    'description': vacancy_description
                 }
-                list_of_jobs.append(jobs)
+                list_of_jobs.append(job)
             self.file_vacancy(list_of_jobs)
             return list_of_jobs
 
@@ -64,10 +65,9 @@ class SuperJob(JobSites, ABC):
             json.dump(list_of_jobs, f, ensure_ascii=False)
 
 
-
-def hh_function(keyword, vacancies_count):
-    dict = SuperJob(keyword, vacancies_count)
-    job_dict = dict.job_dictionary()
-    Vacancy.vacancies_dict
+def sj_function(keyword, vacancies_count):
+    first_dict = SuperJob(keyword, vacancies_count)
+    job_dict = first_dict.job_dictionary()
+    Vacancy.vacancies_dict = job_dict
     for item in Vacancy.vacancies_dict:
         print(str(item))
